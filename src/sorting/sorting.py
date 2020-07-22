@@ -1,29 +1,22 @@
 def merge(arrA, arrB):
-    elements = len(arrA) + len(arrB)
-    merged_arr = [0] * elements
+    merged_arr = []
 
-    i, j, k = 0, 0, 0
+    i = 0
+    j = 0
 
     while i < len(arrA) and j < len(arrB):
-        if arrA[i] <= arrB[j]:
-            merged_arr[k] = arrA[i]
-            k = k + 1
-            i = i + 1
 
+        if arrA[i] < arrB[j]:
+            merged_arr.append(arrA[i])
+            i += 1
         else:
-            merged_arr[k] = arrB[j]
-            k = k + 1
-            j = j + 1
+            merged_arr.append(arrB[j])
+            j += 1
 
-    while i < len(arrA):
-        merged_arr[k] = arrA[i]
-        k = k + 1
-        i = i + 1
-
-    while j < len(arrB):
-        merged_arr[k] = arrB[j]
-        k = k + 1
-        j = j + 1
+    if i < len(arrA):
+        merged_arr.extend(arrA[i:])
+    else:
+        merged_arr.extend(arrB[j:])
 
     return merged_arr
 
@@ -31,14 +24,11 @@ def merge(arrA, arrB):
 def merge_sort(arr):
 
     if len(arr) > 1:
-        mid = int(len(arr) / 2)
-        left = arr[:mid]
-        right = arr[mid:]
+        left = merge_sort(arr[0:len(arr) // 2])
+        right = merge_sort(arr[len(arr) // 2:])
 
-        left_half = merge_sort(left)
-        right_half = merge_sort(right)
+        arr = merge(left, right)
 
-        arr = merge(left_half, right_half)
     return arr
 
 # STRETCH: implement the recursive logic for merge sort in a way that doesn't
